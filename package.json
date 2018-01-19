@@ -1,0 +1,22 @@
+{
+  "name": "webpurple-tg-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ifedyukin/webpurple-tg-bot.git"
+  },
+  "author": "Igor Fedyukin <isfedyukin@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ifedyukin/webpurple-tg-bot/issues"
+  },
+  "homepage": "https://github.com/ifedyukin/webpurple-tg-bot#readme",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.30.0"
+  }
+}

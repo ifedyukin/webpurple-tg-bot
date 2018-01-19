@@ -1,0 +1,7 @@
+{
+  "name": "WebPurple Telegram bot",
+  "description": "Event organization service",
+  "repository": "https://github.com/ifedyukin/webpurple-tg-bot",
+  "website": "https://t.me/webpurple/",
+  "image": "heroku/nodejs"
+}

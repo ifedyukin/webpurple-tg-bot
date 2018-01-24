@@ -1,14 +1,15 @@
 {
   "name": "webpurple-tg-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "Ryazan FrontEnd community bot",
   "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
+  "engines": {
+    "node": "8.9.2"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ifedyukin/webpurple-tg-bot.git"
+  "scripts": {
+    "start": "node index.js",
+    "test": "jasmine",
+    "lint": "eslint --ext .js ./ --ignore-path .gitignore"
   },
   "author": "Igor Fedyukin <isfedyukin@gmail.com>",
   "license": "ISC",
@@ -17,6 +18,20 @@
   },
   "homepage": "https://github.com/ifedyukin/webpurple-tg-bot#readme",
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "keen-tracking": "^1.4.0",
+    "mongoose": "^5.0.0",
+    "node-fetch": "^1.7.3",
     "node-telegram-bot-api": "^0.30.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.15.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jasmine": "^2.9.1",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.5.1",
+    "jasmine": "^2.9.0"
   }
 }

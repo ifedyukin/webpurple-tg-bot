@@ -1,15 +1,27 @@
-const TelegramBot = require('node-telegram-bot-api');
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const { onVkPost } = require('./bot/heplers');
+const { bot, botUrl } = require('./bot/index');
 
-const token = process.env.BOT_TOKEN;
-const bot = new TelegramBot(token, {polling: true});
+const app = express();
+app.use(bodyParser.json());
+mongoose.Promise = Promise;
 
-bot.onText(/\/echo (.+)/, (msg, match) => {
-  const chatId = msg.chat.id;
-  const resp = match[1];
-  bot.sendMessage(chatId, resp);
-});
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log('Mongo connected!');
 
-bot.on('message', (msg) => {
-  const chatId = msg.chat.id;
-  bot.sendMessage(chatId, 'Received your message');
-});
+    app.post(botUrl, (req, res) => {
+      bot.processUpdate(req.body);
+      res.sendStatus(200);
+    });
+
+    app.post('/api/vk', onVkPost(bot));
+
+    app.listen(process.env.PORT, () => {
+      console.log(`Express server is listening on ${process.env.PORT}`);
+      bot.setWebHook(`${process.env.HOOK_URL}${botUrl}`);
+    });
+  })
+  .catch(() => console.log('Mongo connect failed!'));

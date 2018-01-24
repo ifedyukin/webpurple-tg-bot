@@ -1,0 +1,13 @@
+{
+  "extends": "airbnb",
+  "env": {
+      "node": true,
+      "jasmine": true
+  },
+  "rules": {
+    "max-len": 0,
+    "import/no-unresolved": 0,
+    "no-console": 0
+  },
+  "plugins": ["jasmine"]
+}

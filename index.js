@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const { onVkPost } = require('./bot/heplers');
+const { onVkPost, subscribeNotPrivate } = require('./bot/heplers');
 const { bot, botUrl } = require('./bot/index');
 
 const app = express();
@@ -13,7 +13,14 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log('Mongo connected!');
 
     app.post(botUrl, (req, res) => {
-      bot.processUpdate(req.body);
+      const msg = req.body.message;
+      if (msg.chat.type !== 'private' && msg.new_chat_participant && msg.new_chat_participant.is_bot) {
+        bot.getMe()
+          .then(info => subscribeNotPrivate(info, msg))
+          .catch(e => console.log(e));
+      } else if (msg.chat.type === 'private') {
+        bot.processUpdate(req.body);
+      }
       res.sendStatus(200);
     });
 

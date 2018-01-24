@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const userModel = require('../models/user');
+const { keenOnAddToChat } = require('./analytics');
 const { POST_TYPES, VK_REQUESTS } = require('./constants');
 const { getCommandByLang } = require('./languages/commands');
 const { getNoEventsMessage } = require('./languages/messages');
@@ -81,7 +82,7 @@ const onGetEvents = (bot, uid, lang) => {
               res.response
                 .sort((a, b) => a.start_date - b.start_date)
                 .reduce(
-                  // chaining bot responses via promise
+                // chaining bot responses via promise
                   (promise, event) => promise.then(
                     () => processEvent(event),
                     err => console.log(err),
@@ -128,10 +129,27 @@ const onVkPost = (bot) => {
   };
 };
 
+const subscribeNotPrivate = (info, msg) => {
+  if (info.id === msg.new_chat_participant.id) {
+    userModel.findOne({ uid: msg.chat.id }).exec()
+      .then((chat) => {
+        const subscribes = POST_TYPES.reduce((acc, type) => {
+          acc[type] = true;
+          return acc;
+        }, {});
+        keenOnAddToChat({ chat: msg.chat.id });
+        if (!chat) userModel.create({ uid: msg.chat.id, subscribe: true, subscribes });
+        else userModel.findOneAndUpdate({ uid: msg.chat.id }, { ...chat.toObject(), subscribe: true, subscribes }).exec();
+      })
+      .catch(e => console.log(e));
+  }
+};
+
 module.exports = {
   onVkPost,
   onGetNews,
   onGetEvents,
   getTypesKeyboard,
   changeUserSubscribe,
+  subscribeNotPrivate,
 };

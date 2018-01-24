@@ -8,6 +8,7 @@ const keenClient = new KeenTracking({
 const addEventTemplate = type => params => keenClient.recordEvent(type, params);
 const events = {
   keenOnStart: 'onStart',
+  keenOnAddToChat: 'onAddToChat',
   keenOnSubscribe: 'onSubscribe',
   keenOnUnsubscribe: 'onUnsubscribe',
   keenOnChangeSubscribe: 'onChangeSubscribe',

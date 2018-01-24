@@ -9,7 +9,7 @@ const {
   onGetEvents,
   getTypesKeyboard,
   changeUserSubscribe,
-} = require('./heplers');
+} = require('./helpers');
 const {
   keenOnStart,
   keenOnSubscribe,

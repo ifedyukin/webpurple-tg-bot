@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const { onVkPost, subscribeNotPrivate } = require('./bot/heplers');
+const { onVkPost, subscribeNotPrivate } = require('./bot/helpers');
 const { bot, botUrl } = require('./bot/index');
 
 const app = express();

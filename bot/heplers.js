@@ -82,7 +82,7 @@ const onGetEvents = (bot, uid, lang) => {
               res.response
                 .sort((a, b) => a.start_date - b.start_date)
                 .reduce(
-                // chaining bot responses via promise
+                  // chaining bot responses via promise
                   (promise, event) => promise.then(
                     () => processEvent(event),
                     err => console.log(err),

@@ -15,6 +15,7 @@ Contribute to our [site project](https://github.com/kitos/web-purple) - [@kitos/
 * Send Community and Contribution links;
 * New posts subscription;
 * News category filtering;
+* Posting news from VKontakte in public chats and channels;
 * Multilanguage messages.
 
 ### ENV variables

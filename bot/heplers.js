@@ -55,11 +55,14 @@ const onGetNews = (bot, uid) => {
     .then(r => r.json())
     .then((r) => {
       if (r.response && r.response.items) {
-        r.response.items.forEach((post) => {
-          bot.sendMessage(uid, vkPostProcess(post).text, {
-            parse_mode: 'HTML',
-          });
-        });
+        r.response.items.reduce(
+          // chaining bot responses via promise
+          (promise, post) => promise.then(
+            () => bot.sendMessage(uid, vkPostProcess(post).text, { parse_mode: 'HTML' }),
+            err => console.log(err),
+          ),
+          Promise.resolve(),
+        );
       }
     });
 };
@@ -77,7 +80,14 @@ const onGetEvents = (bot, uid, lang) => {
               const processEvent = vkEventProcess(uid, bot);
               res.response
                 .sort((a, b) => a.start_date - b.start_date)
-                .forEach(processEvent);
+                .reduce(
+                  // chaining bot responses via promise
+                  (promise, event) => promise.then(
+                    () => processEvent(event),
+                    err => console.log(err),
+                  ),
+                  Promise.resolve(),
+                );
             }
           });
       } else {

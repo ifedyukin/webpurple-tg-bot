@@ -83,7 +83,7 @@ const vkEventProcess = (uid, bot) => ({
   text += description ? `\n${description.slice(0, 200)}...\n` : '';
   text += `\nhttps://vk.com/event${id}`;
 
-  bot.sendMessage(uid, text, {
+  return bot.sendMessage(uid, text, {
     parse_mode: 'HTML',
   });
 };

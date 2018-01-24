@@ -67,9 +67,7 @@ const formetSingleNum = (num = 0) => {
 };
 
 const getEventDate = (date) => {
-  let hours = date.getHours() + GMT;
-  if (hours > 23) hours = 24 - hours;
-
+  const hours = date.setUTCHours(date.getHours() + GMT);
   const d = `${formetSingleNum(date.getDate())}.${formetSingleNum(date.getMonth() + 1)}.${date.getFullYear()}`;
   const t = `${formetSingleNum(hours)}:${formetSingleNum(date.getMinutes())} (GMT+${GMT})`;
   return `${d} ${t}`;
@@ -92,6 +90,7 @@ const vkEventProcess = (uid, bot) => ({
 
 module.exports = {
   getLayout,
+  getEventDate,
   vkPostProcess,
   buttonsLabels,
   isSupportType,

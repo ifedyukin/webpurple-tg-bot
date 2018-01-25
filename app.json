@@ -2,8 +2,16 @@
   "name": "WebPurple Telegram bot",
   "description": "Ryazan FrontEnd community bot",
   "repository": "https://github.com/ifedyukin/webpurple-tg-bot",
-  "website": "https://t.me/WebPurple_bot/",
+  "website": "https://github.com/ifedyukin/webpurple-tg-bot#webpurple-telegram-bot",
   "logo": "https://cdn4.telesco.pe/file/I_mTCHHi0IHYeFjzOWwKLnm2nGcrQWbe3wEK3OfkTb8xDeGNlKTd4zFCsnPxVrItkzT9p_KQC15I4r6pVc_msRVtRCnWrwTqWAAvfb5sx467xr4xwV2yIojIkdVoz6I271OoEyp6o3u4SZu_OjfUs1yVKTi1GTROvafZXHFGLDvaZR8goWwH4FmGEU-Z_W3kkzHUZhETMVz-eUPY6EGbeC1_ZP6YbbSWbodLqzKix7SZzVDCLNEKlJw9oF5VFFQEBc6H3gpV57QDc1P-id4Lo1g_OYbuWa__iBbiIRHt5f2hP0DNUeaVhz5yh5REwWTJ00XQETcoS8LAHamBhWpoZw.jpg",
   "keywords": ["node", "express", "telegram", "bot", "community"],
-  "image": "heroku/nodejs"
+  "image": "heroku/nodejs",
+  "addons": [
+    {
+      "plan": "keen:developer"
+    },
+    {
+      "plan": "mongolab:sandbox"
+    }
+  ]
 }

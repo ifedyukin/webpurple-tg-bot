@@ -3,7 +3,8 @@ const userModel = require('../models/user');
 const { keenOnAddToChat } = require('./analytics');
 const { POST_TYPES, VK_REQUESTS } = require('./constants');
 const { getCommandByLang } = require('./languages/commands');
-const { getNoEventsMessage } = require('./languages/messages');
+const { vkCommunity, vkSecret, vkResponse } = require('../config');
+const { getNoEventsMessage, getNoNewsMessage } = require('./languages/messages');
 const {
   getLayout,
   vkPostProcess,
@@ -56,7 +57,7 @@ const getTypesKeyboard = (config, lang) => Object.keys(config)
   }, [])
   .concat([[getCommandByLang(lang)('saveSettings')]]);
 
-const onGetNews = (bot, uid) => {
+const onGetNews = (bot, uid, lang) => {
   fetch(VK_REQUESTS.getWall)
     .then(r => r.json())
     .then((r) => {
@@ -69,6 +70,8 @@ const onGetNews = (bot, uid) => {
           ),
           Promise.resolve(),
         );
+      } else {
+        bot.sendMessage(uid, getNoNewsMessage(lang));
       }
     });
 };
@@ -103,16 +106,16 @@ const onGetEvents = (bot, uid, lang) => {
 };
 
 const onVkPost = (bot) => {
-  const regExp = new RegExp(`#(${POST_TYPES.join('|')})@${process.env.VK_COMMUNITY}`, 'gi');
+  const regExp = new RegExp(`#(${POST_TYPES.join('|')})@${vkCommunity}`, 'gi');
 
   return (req, res) => {
     const { secret, object } = req.body;
-    if (process.env.VK_RESPONSE !== 'ok') {
-      res.send(process.env.VK_RESPONSE);
+    if (vkResponse !== 'ok') {
+      res.send(vkResponse);
       return;
     }
 
-    if (secret === process.env.VK_KEY) {
+    if (secret === vkSecret) {
       const { text, types } = vkPostProcess(object, regExp);
       const query = { subscribe: true };
       if (types.length) {

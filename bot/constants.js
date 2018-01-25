@@ -1,3 +1,10 @@
+const {
+  vkUserKey,
+  eventSearch,
+  vkCommunity,
+  vkServiceKey,
+} = require('../config');
+
 const PROFILES = {
   website: 'http://www.webpurple.net/',
   telegram: 'https://t.me/WebPurple',
@@ -36,9 +43,9 @@ const ruLayout = [1, 1, 2, 2];
 const defaultLayout = [2, 2, 2];
 
 const VK_REQUESTS = {
-  getWall: `https://api.vk.com/method/wall.get?count=5&domain=${process.env.VK_COMMUNITY}&access_token=${process.env.VK_SERVICE}&v=5.71`,
-  eventsSearch: `https://api.vk.com/method/groups.search?q=${process.env.EVENT_SEARCH}&future=1&type=event&count=5&access_token=${process.env.VK_USER_TOKEN}&v=5.71`,
-  getGroups: groups => `https://api.vk.com/method/groups.getById?group_ids=${groups.join(',')}&fields=name,description,start_date,place&access_token=${process.env.VK_USER_TOKEN}&v=5.71`,
+  getWall: `https://api.vk.com/method/wall.get?count=5&domain=${vkCommunity}&access_token=${vkServiceKey}&v=5.71`,
+  eventsSearch: `https://api.vk.com/method/groups.search?q=${eventSearch}&future=1&type=event&count=5&access_token=${vkUserKey}&v=5.71`,
+  getGroups: groups => `https://api.vk.com/method/groups.getById?group_ids=${groups.join(',')}&fields=name,description,start_date,place&access_token=${vkUserKey}&v=5.71`,
 };
 
 module.exports = {

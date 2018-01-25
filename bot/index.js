@@ -1,6 +1,7 @@
 
 const userModel = require('../models/user');
 const TelegramBot = require('node-telegram-bot-api');
+const { botToken, isProduction } = require('../config');
 const { expressions } = require('./languages/commands');
 const { getProfilesByLang, getProjectsByLang } = require('./languages/links');
 const { isSupportType, toggleSubscribe, isTypeSubscribed } = require('./utils');
@@ -27,8 +28,15 @@ const {
   getSubscribeSettingsMessage,
 } = require('./languages/messages');
 
-const botUrl = `/bot${process.env.BOT_TOKEN}`;
-const bot = new TelegramBot(process.env.BOT_TOKEN, { onlyFirstMatch: true });
+const botUrl = `/bot${botToken}`;
+const options = isProduction ?
+  {
+    onlyFirstMatch: true,
+  } :
+  {
+    polling: true,
+  };
+const bot = new TelegramBot(botToken, options);
 
 bot.onText(expressions.start, (msg) => {
   const { chat: { id: uid }, from: { language_code: lang } } = msg;
@@ -58,7 +66,7 @@ bot.onText(expressions.community, (msg) => {
   });
 });
 
-bot.onText(expressions.lastNews, msg => onGetNews(bot, msg.chat.id));
+bot.onText(expressions.lastNews, msg => onGetNews(bot, msg.chat.id, msg.from.language_code));
 
 bot.onText(expressions.nextEvent, msg => onGetEvents(bot, msg.chat.id, msg.from.language_code));
 

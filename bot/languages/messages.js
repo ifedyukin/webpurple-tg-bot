@@ -41,6 +41,10 @@ const MESSAGES = {
     ru: 'Запланированных мероприятий нет!',
     'en-US': 'No future events!',
   },
+  getNoNewsMessage: {
+    ru: 'Новостей нет!',
+    'en-US': 'No news!',
+  },
 };
 
 module.exports = Object.entries(MESSAGES)

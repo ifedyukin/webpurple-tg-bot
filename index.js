@@ -1,14 +1,20 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const { onVkPost, subscribeNotPrivate } = require('./bot/helpers');
 const { bot, botUrl } = require('./bot/index');
+const { onVkPost, subscribeNotPrivate } = require('./bot/helpers');
+const {
+  port,
+  hookUrl,
+  mongoDB,
+  isProduction,
+} = require('./config');
 
 const app = express();
 app.use(bodyParser.json());
 mongoose.Promise = Promise;
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(mongoDB)
   .then(() => {
     console.log('Mongo connected!');
 
@@ -26,9 +32,11 @@ mongoose.connect(process.env.MONGODB_URI)
 
     app.post('/api/vk', onVkPost(bot));
 
-    app.listen(process.env.PORT, () => {
-      console.log(`Express server is listening on ${process.env.PORT}`);
-      bot.setWebHook(`${process.env.HOOK_URL}${botUrl}`);
+    app.listen(port, () => {
+      console.log(`Express server is listening on ${port}`);
+      if (isProduction) {
+        bot.setWebHook(`${hookUrl}${botUrl}`);
+      }
     });
   })
   .catch(() => console.log('Mongo connect failed!'));

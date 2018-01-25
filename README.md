@@ -59,6 +59,12 @@ npm install
 npm run development
 ```
 
+3. Run tests and linter
+```bash
+npm run test
+npm run lint
+```
+
 #### Create Heroku instance and deploy bot
 1. Click "[Deploy to Heroku](https://heroku.com/deploy?template=https://github.com/ifedyukin/webpurple-tg-bot)" button in the top of `README`.
 2. Follow the directions.

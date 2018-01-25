@@ -48,7 +48,12 @@ const changeUserSubscribe = (uid, lang, callback, subscribe = false) => {
 
 const getTypesKeyboard = (config, lang) => Object.keys(config)
   .filter(type => POST_TYPES.includes(type.toLowerCase()))
-  .map(key => [`${config[key] ? '✅' : '❌'} ${key.charAt(0).toUpperCase() + key.slice(1)}`])
+  .map(key => `${config[key] ? '✅' : '❌'} ${key.charAt(0).toUpperCase() + key.slice(1)}`)
+  .reduce((acc, item, index) => {
+    if (index % 2) acc[acc.length - 1].push(item);
+    else acc.push([item]);
+    return acc;
+  }, [])
   .concat([[getCommandByLang(lang)('saveSettings')]]);
 
 const onGetNews = (bot, uid) => {
@@ -112,6 +117,8 @@ const onVkPost = (bot) => {
       const query = { subscribe: true };
       if (types.length) {
         query.$or = types.map(type => ({ [`subscribes.${type}`]: true }));
+      } else {
+        query[`subscribes.${POST_TYPES[0]}`] = true;
       }
       userModel.find(query).exec()
         .then((subscribers = []) => subscribers

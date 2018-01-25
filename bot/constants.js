@@ -18,7 +18,7 @@ const DELAULT_LANG = 'en-US';
 
 const GMT = 3;
 
-const POST_TYPES = ['events', 'news', 'study'];
+const POST_TYPES = ['no tag', 'events', 'news', 'study'];
 
 const LABELS = [
   'lastNews',

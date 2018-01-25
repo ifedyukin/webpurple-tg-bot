@@ -30,24 +30,26 @@ Contribute to our [site project](https://github.com/kitos/web-purple) - [@kitos/
 * VKontakte account (VK integrations).
 
 #### ENV variables
-| Key  | Values | How to get? |
-| ------------- | ------------- |------------- |
-| BOT_TOKEN  | Telegram bot-API token  | [Hot do I create bot?](https://core.telegram.org/bots#3-how-do-i-create-a-bot) |
-| EVENT_SEARCH  | VKontakte event search query  |  Think about it :sunglasses:  |
-| HOOK_URL  | Telegram bot WebHook url | For <u>Heroku</u>: `https://<your-app-name>.herokuapp.com`  |
-| KEEN_PROJECT_ID  | Keen project id  | Autoconfigured for <u>Heroku</u> by `Keen` |
-| KEEN_WRITE_KEY  | Keen API write key  | Autoconfigured for <u>Heroku</u> by `Keen` |
-| MONGODB_URI  | MongoDB full url  | Autoconfigured for <u>Heroku</u> by `mLab` |
-| VK_COMMUNITY  | VKontakte community domain  | Your community custom domain `https://vk.com/<domain>` |
-| VK_KEY  | VKontakte secret key (`any`) | Think about it :sunglasses:  |
-| VK_RESPONSE  | VKontakte WebHook response  | [VKontakte Callback API](https://vk.com/dev/callback_api) | 
-| VK_SERVICE  | VKontakte Service Token  | [VKontakte Service Token](https://vk.com/dev/access_token?f=3.%20%D0%A1%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D0%BD%D1%8B%D0%B9%20%D0%BA%D0%BB%D1%8E%D1%87%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%B0) |
-| VK_USER_TOKEN  | VKontakte User Token  | [VKontakte User Token](https://vk.com/dev/access_token?f=1.%20%D0%9A%D0%BB%D1%8E%D1%87%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%B0%20%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F) |
+| ENV Key  | `config.js` | Values | How to get? |
+| ------------- | ------------- | ------------- |------------- |
+| PORT  | port | Application port (`default: 8000`) | Autoconfigured for Heroku by runner |
+| NODE_ENV  | isProduction | ENV | Autoconfigured: `NODE_ENV !== 'development'`  |
+| MONGODB_URI | mongoDB  | MongoDB full url  | Autoconfigured for Heroku by `mLab` |
+| HOOK_URL  | hookUrl |Telegram bot WebHook url | For Heroku: `https://<your-app-name>.herokuapp.com`  |
+| BOT_TOKEN  | botToken | Telegram bot-API token  | [Hot do I create bot?](https://core.telegram.org/bots#3-how-do-i-create-a-bot) |
+| VK_KEY | vkSecret | VKontakte secret key (`any`) | Think about it :sunglasses:  |
+| VK_RESPONSE | vkResponse | VKontakte WebHook response  | [VKontakte Callback API](https://vk.com/dev/callback_api) | 
+| EVENT_SEARCH | eventSearch | VKontakte event search query  |  Think about it :sunglasses:  |
+| VK_USER_TOKEN | vkUserKey | VKontakte User Token  | [VKontakte User Token](https://vk.com/dev/access_token?f=1.%20%D0%9A%D0%BB%D1%8E%D1%87%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%B0%20%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8F) |
+| VK_COMMUNITY | vkCommunity | VKontakte community domain  | Your community custom domain `https://vk.com/<domain>` |
+| VK_SERVICE | vkServiceKey | VKontakte Service Token  | [VKontakte Service Token](https://vk.com/dev/access_token?f=3.%20%D0%A1%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D0%BD%D1%8B%D0%B9%20%D0%BA%D0%BB%D1%8E%D1%87%20%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%B0) |
+| KEEN_PROJECT_ID | none | Keen project id  | Autoconfigured for Heroku by `Keen` |
+| KEEN_WRITE_KEY | none | Keen API write key  | Autoconfigured for Heroku by `Keen` |
 
 
 #### Run bot locale
 1. Configure [environment](https://github.com/ifedyukin/webpurple-tg-bot#env-variables) variables in `config.js` file.    
-<u>Do not publish **access** keys to public!</u>    
+Do not publish **access** keys to public!    
 
 2. Install and run application:
 ```bash

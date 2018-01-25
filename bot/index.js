@@ -29,14 +29,10 @@ const {
 } = require('./languages/messages');
 
 const botUrl = `/bot${botToken}`;
-const options = isProduction ?
-  {
-    onlyFirstMatch: true,
-  } :
-  {
-    polling: true,
-  };
-const bot = new TelegramBot(botToken, options);
+const bot = new TelegramBot(botToken, {
+  onlyFirstMatch: true,
+  polling: !isProduction,
+});
 
 bot.onText(expressions.start, (msg) => {
   const { chat: { id: uid }, from: { language_code: lang } } = msg;

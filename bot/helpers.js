@@ -148,8 +148,11 @@ const subscribeNotPrivate = (info, msg) => {
           return acc;
         }, {});
         keenOnAddToChat({ chat: msg.chat.id });
-        if (!chat) userModel.create({ uid: msg.chat.id, subscribe: true, subscribes });
-        else userModel.findOneAndUpdate({ uid: msg.chat.id }, { ...chat.toObject(), subscribe: true, subscribes }).exec();
+        if (!chat) {
+          userModel.create({ uid: msg.chat.id, subscribe: true, subscribes });
+        } else {
+          userModel.findOneAndUpdate({ uid: msg.chat.id }, { ...chat.toObject(), subscribe: true, subscribes }).exec();
+        }
       })
       .catch(e => console.log(e));
   }

@@ -23,7 +23,7 @@
     "express": "^4.16.2",
     "keen-tracking": "^1.4.0",
     "mongoose": "^5.0.0",
-    "node-fetch": "^1.7.3",
+    "node-fetch": "^2.0.0",
     "node-telegram-bot-api": "^0.30.0"
   },
   "devDependencies": {

@@ -1,8 +1,8 @@
 # WebPurple Telegram bot
 [![Build Status](https://travis-ci.org/ifedyukin/webpurple-tg-bot.svg?branch=master)](https://travis-ci.org/ifedyukin/webpurple-tg-bot)
 [![Telegram Bot](https://img.shields.io/badge/Telegram-%40WebPurple__bot-0088cc.svg)](https://t.me/WebPurple_bot)
-[![Dependency status](https://david-dm.org/ifedyukin/webpurple-tg-bot/status.png)](https://david-dm.org/ifedyukin/webpurple-tg-bot#info=dependencies&view=table)
-[![Dev Dependency Status](https://david-dm.org/ifedyukin/webpurple-tg-bot/dev-status.png)](https://david-dm.org/ifedyukin/webpurple-tg-bot#info=devDependencies&view=table)
+[![Dependency status](https://david-dm.org/ifedyukin/webpurple-tg-bot/status.png)](https://david-dm.org/ifedyukin/webpurple-tg-bot)
+[![Dev Dependency Status](https://david-dm.org/ifedyukin/webpurple-tg-bot/dev-status.png)](https://david-dm.org/ifedyukin/webpurple-tg-bot?type=dev)
 [![Deploy to Heroku](https://img.shields.io/badge/Deploy_to-Heroku-9777ba.svg)](https://heroku.com/deploy?template=https://github.com/ifedyukin/webpurple-tg-bot)    
 
 Ryazan FrontEnd community bot.    

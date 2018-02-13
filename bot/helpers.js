@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const userModel = require('../models/user');
 const { keenOnAddToChat } = require('./analytics');
+const { notifyUserId, botToken } = require('../config');
 const { POST_TYPES, VK_REQUESTS } = require('./constants');
 const { getCommandByLang } = require('./languages/commands');
 const { vkCommunity, vkSecret, vkResponse } = require('../config');
@@ -158,6 +159,16 @@ const subscribeNotPrivate = (info, msg) => {
   }
 };
 
+const uncaughtExceptionHandler = (error) => {
+  const message = `
+  WebPurple bot exception!
+  Code: ${error.code}
+  Message: ${error.message}
+  `;
+  const params = `chat_id=${notifyUserId}&disable_web_page_preview=1&text=${message}`;
+  fetch(`https://api.telegram.org/bot${botToken}/sendMessage?${params}`);
+};
+
 module.exports = {
   onVkPost,
   onGetNews,
@@ -165,4 +176,5 @@ module.exports = {
   getTypesKeyboard,
   changeUserSubscribe,
   subscribeNotPrivate,
+  uncaughtExceptionHandler,
 };

@@ -10,4 +10,5 @@ module.exports = {
   vkUserKey: process.env.VK_USER_TOKEN || 'user token',
   vkCommunity: process.env.VK_COMMUNITY || 'webpurple',
   vkServiceKey: process.env.VK_SERVICE || 'service token',
+  notifyUserId: process.env.NOTIFY_USER || '',
 };

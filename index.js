@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { bot, botUrl } = require('./bot/index');
-const { onVkPost, subscribeNotPrivate } = require('./bot/helpers');
+const { onVkPost, subscribeNotPrivate, uncaughtExceptionHandler } = require('./bot/helpers');
 const {
   port,
   hookUrl,
@@ -13,6 +13,7 @@ const {
 const app = express();
 app.use(bodyParser.json());
 mongoose.Promise = Promise;
+process.on('uncaughtException', uncaughtExceptionHandler);
 
 mongoose.connect(mongoDB)
   .then(() => {

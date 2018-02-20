@@ -8,6 +8,8 @@ const { isSupportType, toggleSubscribe, isTypeSubscribed } = require('./utils');
 const {
   onGetNews,
   onGetEvents,
+  onNewsletter,
+  onDeleteMessage,
   getTypesKeyboard,
   changeUserSubscribe,
 } = require('./helpers');
@@ -109,7 +111,7 @@ bot.onText(expressions.settings, (msg) => {
         });
       }
     })
-    .catch(e => console.log(e));
+    .catch(console.log);
 });
 
 bot.onText(/[❌|✅] (.+)/i, (msg, match) => {
@@ -136,7 +138,7 @@ bot.onText(/[❌|✅] (.+)/i, (msg, match) => {
             });
         }
       })
-      .catch(e => console.log(e));
+      .catch(console.log);
   }
 });
 
@@ -148,6 +150,32 @@ bot.onText(expressions.saveSettings, (msg) => {
     keyboard => bot.sendMessage(
       uid,
       getSaveSubscribesMessage(lang),
+      { reply_markup: { resize_keyboard: true, keyboard } },
+    ),
+    null,
+  );
+});
+
+bot.onText(expressions.sendMessage, (msg, match) => {
+  const { chat: { id: uid } } = msg;
+  const text = match[1];
+  onNewsletter(uid, bot, text);
+});
+
+bot.onText(expressions.deleteMessage, (msg, match) => {
+  const { chat: { id: uid } } = msg;
+  const messageId = match[1];
+  onDeleteMessage(uid, bot, messageId);
+});
+
+bot.onText(expressions.all, (msg) => {
+  const { chat: { id: uid }, from: { language_code: lang } } = msg;
+  changeUserSubscribe(
+    uid,
+    lang,
+    keyboard => bot.sendMessage(
+      uid,
+      getAboutText(lang),
       { reply_markup: { resize_keyboard: true, keyboard } },
     ),
     null,

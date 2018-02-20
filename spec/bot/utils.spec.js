@@ -7,10 +7,8 @@ const {
 } = require('../../bot/constants');
 const {
   getLayout,
-  getEventDate,
   vkPostProcess,
   buttonsLabels,
-  vkEventProcess,
   toggleSubscribe,
 } = require('../../bot/utils');
 
@@ -92,56 +90,6 @@ describe('#buttonsLabels testing', () => {
       ...LABELS,
       ...SUBSCRIBE_LABELS,
     ]);
-  });
-});
-
-describe('#vkEventProcess testing', () => {
-  const event1 = {
-    name: 'event1',
-    id: 1,
-    start_date: 1528801200,
-    description: 'description1',
-  };
-
-  const event2 = {
-    name: 'event2',
-    id: 2,
-    place: {
-      address: 'Pushkina street, Kolotushkina house',
-    },
-    description: 'description2',
-  };
-
-  const uid = 0;
-
-  const options = {
-    parse_mode: 'HTML',
-  };
-
-  const processEvent = (text, event) => vkEventProcess(uid, {
-    sendMessage: (userId, msg, opt) => {
-      expect(userId).toEqual(uid);
-      expect(opt).toEqual(options);
-      expect(msg).toEqual(text);
-    },
-  })(event);
-
-  it('should return event message', () => {
-    let text;
-    text = `<b>${event1.name}</b>\n`;
-    text += `<i>${getEventDate(new Date(event1.start_date * 1000))}</i>\n`;
-    text += `\n${event1.description.slice(0, 200)}...\n`;
-    text += `\nhttps://vk.com/event${event1.id}`;
-    processEvent(text, event1);
-  });
-
-  it('should return event message', () => {
-    let text;
-    text = `<b>${event2.name}</b>\n`;
-    text += `<i>${event2.place.address}</i>\n`;
-    text += `\n${event2.description.slice(0, 200)}...\n`;
-    text += `\nhttps://vk.com/event${event2.id}`;
-    processEvent(text, event2);
   });
 });
 

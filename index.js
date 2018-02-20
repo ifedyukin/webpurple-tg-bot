@@ -2,7 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { bot, botUrl } = require('./bot/index');
-const { onVkPost, subscribeNotPrivate, uncaughtExceptionHandler } = require('./bot/helpers');
+const {
+  onVkPost,
+  subscribeNotPrivate,
+  uncaughtExceptionHandler,
+} = require('./bot/helpers');
 const {
   port,
   hookUrl,
@@ -24,7 +28,7 @@ mongoose.connect(mongoDB)
       if (msg.chat.type !== 'private' && msg.new_chat_participant && msg.new_chat_participant.is_bot) {
         bot.getMe()
           .then(info => subscribeNotPrivate(info, msg))
-          .catch(e => console.log(e));
+          .catch(console.log);
       } else if (msg.chat.type === 'private') {
         bot.processUpdate(req.body);
       }
@@ -40,4 +44,4 @@ mongoose.connect(mongoDB)
       }
     });
   })
-  .catch(() => console.log('Mongo connect failed!'));
+  .catch(console.log);

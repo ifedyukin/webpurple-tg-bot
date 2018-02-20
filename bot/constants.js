@@ -1,6 +1,5 @@
 const {
   vkUserKey,
-  eventSearch,
   vkCommunity,
   vkServiceKey,
 } = require('../config');
@@ -44,7 +43,6 @@ const defaultLayout = [2, 2, 2];
 
 const VK_REQUESTS = {
   getWall: `https://api.vk.com/method/wall.get?count=5&domain=${vkCommunity}&access_token=${vkServiceKey}&v=5.71`,
-  eventsSearch: `https://api.vk.com/method/groups.search?q=${eventSearch}&future=1&type=event&count=5&access_token=${vkUserKey}&v=5.71`,
   getGroups: groups => `https://api.vk.com/method/groups.getById?group_ids=${groups.join(',')}&fields=name,description,start_date,place&access_token=${vkUserKey}&v=5.71`,
 };
 

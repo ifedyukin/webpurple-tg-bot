@@ -6,9 +6,9 @@ module.exports = {
   botToken: process.env.BOT_TOKEN || 'token',
   vkSecret: process.env.VK_KEY || 'secret',
   vkResponse: process.env.VK_RESPONSE || 'ok',
-  eventSearch: process.env.EVENT_SEARCH || 'event',
   vkUserKey: process.env.VK_USER_TOKEN || 'user token',
   vkCommunity: process.env.VK_COMMUNITY || 'webpurple',
   vkServiceKey: process.env.VK_SERVICE || 'service token',
+  vkCommunityId: process.env.VK_COMMUNITY_ID || '',
   notifyUserId: process.env.NOTIFY_USER || '',
 };

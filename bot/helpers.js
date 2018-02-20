@@ -1,10 +1,16 @@
 const fetch = require('node-fetch');
 const userModel = require('../models/user');
+const messageModel = require('../models/message');
 const { keenOnAddToChat } = require('./analytics');
 const { notifyUserId, botToken } = require('../config');
 const { POST_TYPES, VK_REQUESTS } = require('./constants');
 const { getCommandByLang } = require('./languages/commands');
-const { vkCommunity, vkSecret, vkResponse } = require('../config');
+const {
+  vkSecret,
+  vkResponse,
+  vkCommunity,
+  vkCommunityId,
+} = require('../config');
 const { getNoEventsMessage, getNoNewsMessage } = require('./languages/messages');
 const {
   getLayout,
@@ -28,7 +34,7 @@ const changeUserSubscribe = (uid, lang, callback, subscribe = false) => {
   if (subscribe === null) {
     userModel.findOne({ uid }).exec()
       .then(user => callback(getMenuKeyboard(user.subscribe, lang)))
-      .catch(e => console.log(e));
+      .catch(console.log);
   } else {
     userModel.findOne({ uid }).exec()
       .then((user) => {
@@ -44,7 +50,7 @@ const changeUserSubscribe = (uid, lang, callback, subscribe = false) => {
             .then(() => callback(getMenuKeyboard(subscribe, lang)));
         }
       })
-      .catch(e => console.log(e));
+      .catch(console.log);
   }
 };
 
@@ -67,7 +73,7 @@ const onGetNews = (bot, uid, lang) => {
           // chaining bot responses via promise
           (promise, post) => promise.then(
             () => bot.sendMessage(uid, vkPostProcess(post).text, { parse_mode: 'HTML' }),
-            err => console.log(err),
+            console.log,
           ),
           Promise.resolve(),
         );
@@ -78,31 +84,41 @@ const onGetNews = (bot, uid, lang) => {
 };
 
 const onGetEvents = (bot, uid, lang) => {
-  fetch(VK_REQUESTS.eventsSearch)
-    .then(r => r.json())
-    .then((r) => {
-      if (r.response && r.response.items && r.response.items.length) {
-        const groups = r.response.items.map(g => g.id);
-        fetch(VK_REQUESTS.getGroups(groups))
-          .then(res => res.json())
-          .then((res) => {
-            if (res.response && res.response.length) {
-              const processEvent = vkEventProcess(uid, bot);
-              res.response
-                .sort((a, b) => a.start_date - b.start_date)
-                .reduce(
-                  // chaining bot responses via promise
-                  (promise, event) => promise.then(
-                    () => processEvent(event),
-                    err => console.log(err),
-                  ),
-                  Promise.resolve(),
-                );
+  fetch('https://vk.com/al_groups.php', {
+    method: 'POST',
+    body: `act=show_events&al=1&oid=-${vkCommunityId}`,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  })
+    .then(res => res.text())
+    .then(string => string
+      .match(/public_event_cell(\d+)/ig)
+      .map(s => s.replace(/public_event_cell(\d+)/ig, '$1')))
+    .then((groups) => {
+      fetch(VK_REQUESTS.getGroups(groups.slice(0, 5)))
+        .then(res => res.json())
+        .then((res) => {
+          if (res.response && res.response.length) {
+            const nowDate = new Date();
+            const processEvent = vkEventProcess(uid, bot);
+            const events = res.response
+              .filter(event => new Date(event.start_date * 1000) > nowDate)
+              .sort((a, b) => a.start_date - b.start_date);
+
+            if (!events.length) {
+              bot.sendMessage(uid, getNoEventsMessage(lang));
+              return;
             }
-          });
-      } else {
-        bot.sendMessage(uid, getNoEventsMessage(lang));
-      }
+
+            events.reduce(
+              // chaining bot responses via promise
+              (promise, event) => promise.then(
+                () => processEvent(event),
+                console.log,
+              ),
+              Promise.resolve(),
+            );
+          }
+        });
     });
 };
 
@@ -132,7 +148,7 @@ const onVkPost = (bot) => {
               parse_mode: 'HTML',
             });
           }))
-        .catch(e => console.log(e));
+        .catch(console.log);
       res.send('ok');
     } else {
       res.sendStatus(403);
@@ -155,9 +171,34 @@ const subscribeNotPrivate = (info, msg) => {
           userModel.findOneAndUpdate({ uid: msg.chat.id }, { ...chat.toObject(), subscribe: true, subscribes }).exec();
         }
       })
-      .catch(e => console.log(e));
+      .catch(console.log);
   }
 };
+
+const onNewsletter = (adminId, bot, text) => userModel.findOne({ uid: adminId }).exec()
+  .then(user => (user.admin ? userModel.find({}).exec() : Promise.resolve()))
+  .then((subscribers = []) => subscribers
+    .forEach(({ uid }) => {
+      bot.sendMessage(uid, text, {
+        parse_mode: 'HTML',
+        disable_web_page_preview: true,
+      })
+        .then(res => messageModel.create({ text: res.text, message_id: res.message_id, chat_id: res.chat.id }))
+        .then(() => bot.sendMessage(adminId, 'Newsletter success!'));
+    }))
+  .catch(console.log);
+
+const onDeleteMessage = (adminId, bot, messageId) => userModel.findOne({ uid: adminId }).exec()
+  .then((user) => {
+    if (user.admin) {
+      return messageModel.findOne({ message_id: messageId }).exec()
+        .then(message => bot.deleteMessage(message.chat_id, messageId))
+        .then(r => r && messageModel.findOneAndRemove({ message_id: messageId }).exec())
+        .then(() => bot.sendMessage(adminId, 'Delete success!'));
+    }
+    return Promise.resolve();
+  })
+  .catch(console.log);
 
 const uncaughtExceptionHandler = (error) => {
   const message = `
@@ -173,6 +214,8 @@ module.exports = {
   onVkPost,
   onGetNews,
   onGetEvents,
+  onNewsletter,
+  onDeleteMessage,
   getTypesKeyboard,
   changeUserSubscribe,
   subscribeNotPrivate,

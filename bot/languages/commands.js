@@ -77,6 +77,9 @@ const expressions = Object.entries(COMMANDS)
     [name]: new RegExp(`${text.emoji ? `${text.emoji} ` : ''}${Object.values(text.langs).join('|')}`),
   }), {
     changeSettings: new RegExp('[❌|✅] (.+)', 'i'),
+    all: new RegExp('([\\s\\S]*)'),
+    sendMessage: new RegExp('/send ([\\s\\S]+)'), // eslint-disable-line no-useless-escape
+    deleteMessage: new RegExp('/delete (.+)'),
   });
 
 module.exports = {

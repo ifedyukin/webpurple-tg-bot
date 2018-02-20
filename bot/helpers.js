@@ -183,8 +183,7 @@ const onNewsletter = (adminId, bot, text) => userModel.findOne({ uid: adminId })
         parse_mode: 'HTML',
         disable_web_page_preview: true,
       })
-        .then(res => messageModel.create({ text: res.text, message_id: res.message_id, chat_id: res.chat.id }))
-        .then(() => bot.sendMessage(adminId, 'Newsletter success!'));
+        .then(res => messageModel.create({ text: res.text, message_id: res.message_id, chat_id: res.chat.id }));
     }))
   .catch(console.log);
 

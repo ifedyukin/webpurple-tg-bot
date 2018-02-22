@@ -151,7 +151,7 @@ const vkEventProcess = (uid, bot) => ({
             description,
             start: getIcsDate(new Date(startDate * 1000)),
             location: (place && place.address) || '',
-            url: `https://vk.com/${id}`,
+            url: `https://vk.com/event${id}`,
             status: 'CONFIRMED',
             end: endDate ? getIcsDate(new Date(endDate * 1000)) : null,
             duration: endDate ? null : { hours: 1, minutes: 30 },

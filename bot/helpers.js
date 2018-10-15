@@ -133,6 +133,8 @@ const onVkPost = (bot) => {
     }
 
     if (secret === vkSecret) {
+      res.send('ok');
+
       const { text, types } = vkPostProcess(object, regExp);
       const query = { subscribe: true };
       if (types.length) {
@@ -140,7 +142,7 @@ const onVkPost = (bot) => {
       } else {
         query[`subscribes.${POST_TYPES[0]}`] = true;
       }
-      res.send('ok');
+
       userModel.find(query).exec()
         .then((subscribers = []) => subscribers
           .filter(subscriber => subscriber.subscribe)

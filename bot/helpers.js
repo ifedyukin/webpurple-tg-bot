@@ -140,6 +140,7 @@ const onVkPost = (bot) => {
       } else {
         query[`subscribes.${POST_TYPES[0]}`] = true;
       }
+      res.send('ok');
       userModel.find(query).exec()
         .then((subscribers = []) => subscribers
           .filter(subscriber => subscriber.subscribe)
@@ -149,7 +150,6 @@ const onVkPost = (bot) => {
             });
           }))
         .catch(console.log);
-      res.send('ok');
     } else {
       res.sendStatus(403);
     }
